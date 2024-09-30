@@ -18,12 +18,16 @@ import org.springframework.security.oauth2.provider.approval.UserApprovalHandler
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Configuration
@@ -60,7 +64,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
-//                .tokenEnhancer(null)
+                .tokenEnhancer(tokenEnhancer())
                 .tokenStore(tokenStore())
                 .authorizationCodeServices(authorizationCodeServices())
                 .accessTokenConverter(accessTokenConverter())
@@ -100,17 +104,24 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
         return clientDetailsService;
     }
 
-//    @Bean
-//    public JedisConnectionFactory jedisConnectionFactory(){
-//        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-//        jedisConnectionFactory.setUsePool(true);
-//        jedisConnectionFactory.setHostName("localhost");
-//        jedisConnectionFactory.setPort(6379);
-//        return jedisConnectionFactory;
-//    }
-
     @Bean
     public UserApprovalHandler userApprovalHandler() {
         return new ManagedUserApprovalHandler();
     }
+
+    @Bean
+    public TokenEnhancerChain tokenEnhancerChain(){
+        List<TokenEnhancer> tokenEnhancerList = new ArrayList<>();
+        final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerList.add(tokenEnhancer());
+        tokenEnhancerList.add(accessTokenConverter());
+        tokenEnhancerChain.setTokenEnhancers(tokenEnhancerList);
+        return tokenEnhancerChain;
+    }
+
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new UserTokenEnchancer();
+    }
+
 }

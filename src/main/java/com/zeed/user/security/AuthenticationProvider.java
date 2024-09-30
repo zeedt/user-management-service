@@ -1,6 +1,6 @@
 package com.zeed.user.security;
 
-import com.zeed.user.models.ManagedUser;
+import com.zeed.usermanagement.models.ManagedUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 

@@ -27,6 +27,8 @@ public class RedisTokenStore implements TokenStore {
 
     private Logger logger = LoggerFactory.getLogger(RedisTokenStore.class.getName());
 
+    static final long serialVersionUID = 600L;
+
     private static final String ACCESS = "access:";
     private static final String AUTH_TO_ACCESS = "auth_to_access:";
     private static final String AUTH = "auth:";

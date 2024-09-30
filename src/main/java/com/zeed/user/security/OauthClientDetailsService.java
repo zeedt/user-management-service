@@ -1,6 +1,6 @@
 package com.zeed.user.security;
 
-import com.zeed.user.repository.OauthClientDetailsRepository;
+import com.zeed.usermanagement.repository.OauthClientDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.stereotype.Service;

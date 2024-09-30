@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.zeed.user.repository", entityManagerFactoryRef = "localContainerEntityManagerFactoryBean" ,transactionManagerRef = "platformTransactionManager" )
+@EnableJpaRepositories(basePackages = "com.zeed.usermanagement.repository", entityManagerFactoryRef = "localContainerEntityManagerFactoryBean" ,transactionManagerRef = "platformTransactionManager" )
 public class DataSourceConfig {
 
     @Autowired
@@ -28,7 +28,7 @@ public class DataSourceConfig {
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(primaryDataSource());
         em.setPackagesToScan(
-                new String[] { "com.zeed.user.models" });
+                new String[] { "com.zeed.usermanagement.models" });
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

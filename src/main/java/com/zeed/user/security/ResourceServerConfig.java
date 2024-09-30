@@ -28,6 +28,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        http.requestMatcher(new ApiRequestMatcher());
         http.authorizeRequests()
                 .antMatchers("/api/v1/clients/**").permitAll()
                 .antMatchers("/api/v1/domains/register-domain").permitAll()

@@ -1,5 +1,6 @@
 package com.zeed.user.security;
 
+import com.zeed.usermanagement.security.UserDetailsTokenEnvelope;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.SpringSecurityMessageSource;

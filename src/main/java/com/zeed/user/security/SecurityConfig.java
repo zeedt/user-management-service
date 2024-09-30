@@ -57,30 +57,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         new String[]{"/app/**",
                                 "/login",
+                                "/user/**",
                                 "/css/**",
-                                "/js/**",
-                                "/dashboard/**",
-                                "/image/**",
-                                "/assets/**",
-                                "/localusers/**",
-                                "/activations/**"
+                                "/js/**"
                         }
                 ).permitAll()
                 .anyRequest().fullyAuthenticated().and()
-                .csrf().ignoringAntMatchers("/oauth/**")
+                .csrf().ignoringAntMatchers("/user/**")
                 .requireCsrfProtectionMatcher(new RequestMatcher() {
                     private Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
                     private RegexRequestMatcher apiMatcher = new RegexRequestMatcher("/api/.*", null);
-                    private RegexRequestMatcher oauthMatcher = new RegexRequestMatcher("/oauth/.*", null);
-                    private RegexRequestMatcher localuserMatcher = new RegexRequestMatcher("/localusers/.*", null);
+//                    private RegexRequestMatcher oauthMatcher = new RegexRequestMatcher("/oauth/.*", null);
+                    private RegexRequestMatcher localuserMatcher = new RegexRequestMatcher("/user/.*", null);
                     @Override
                     public boolean matches(HttpServletRequest httpServletRequest) {
                         if (allowedMethods.matcher(httpServletRequest.getMethod()).matches())
                             return false;
                         if (apiMatcher.matches(httpServletRequest))
                             return false;
-                        if (oauthMatcher.matches(httpServletRequest))
-                            return false;
+//                        if (oauthMatcher.matches(httpServletRequest))
+//                            return false;
                         if (localuserMatcher.matches(httpServletRequest))
                             return false;
                         return true;
@@ -91,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .sessionFixation().migrateSession()
                 .maximumSessions(1)
-                .expiredUrl(("/login"))
+//                .expiredUrl(("/login"))
                 .maxSessionsPreventsLogin(false)
                 .sessionRegistry(new SessionRegistryImpl()).and()
                 .sessionAuthenticationStrategy(userConcurrentSessions())
